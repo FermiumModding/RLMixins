@@ -23,12 +23,12 @@ public abstract class EntityZombieMixin {
         deadVillager.writeToNBT(villagerTags);
 
         NBTTagCompound keptTags = new NBTTagCompound();
-        keptTags.setInteger("Profession", villagerTags.getInteger("Profession"));
-        keptTags.setString("ProfessionName", villagerTags.getString("ProfessionName"));
-        keptTags.setInteger("Riches", villagerTags.getInteger("Riches"));
-        keptTags.setInteger("Career", villagerTags.getInteger("Career"));
-        keptTags.setInteger("CareerLevel", villagerTags.getInteger("CareerLevel"));
-        keptTags.setTag("Offers", villagerTags.getTag("Offers"));
+        if(villagerTags.hasKey("Profession")) keptTags.setInteger("Profession", villagerTags.getInteger("Profession"));
+        if(villagerTags.hasKey("ProfessionName")) keptTags.setString("ProfessionName", villagerTags.getString("ProfessionName"));
+        if(villagerTags.hasKey("Riches")) keptTags.setInteger("Riches", villagerTags.getInteger("Riches"));
+        if(villagerTags.hasKey("Career")) keptTags.setInteger("Career", villagerTags.getInteger("Career"));
+        if(villagerTags.hasKey("CareerLevel")) keptTags.setInteger("CareerLevel", villagerTags.getInteger("CareerLevel"));
+        if(villagerTags.hasKey("Offers")) keptTags.setTag("Offers", villagerTags.getTag("Offers"));
 
         newZombieVillager.getEntityData().setTag("villagerTags", keptTags);
         return original.call(world, newZombieVillager);

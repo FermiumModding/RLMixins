@@ -32,15 +32,15 @@ public abstract class EntityVillagerMixin extends EntityLivingBase implements IE
 
     @Override
     public void rlmixins$setTradesFromNBT(NBTTagCompound compound) {
-        this.setProfession(compound.getInteger("Profession"));
+        if(compound.hasKey("Profession")) this.setProfession(compound.getInteger("Profession"));
         if(compound.hasKey("ProfessionName")) {
             VillagerRegistry.VillagerProfession p = ForgeRegistries.VILLAGER_PROFESSIONS.getValue(new ResourceLocation(compound.getString("ProfessionName")));
             if(p == null) p = ForgeRegistries.VILLAGER_PROFESSIONS.getValue(new ResourceLocation("minecraft:farmer"));
             this.setProfession(p);
         }
-        this.wealth = compound.getInteger("Riches");
-        this.careerId = compound.getInteger("Career");
-        this.careerLevel = compound.getInteger("CareerLevel");
+        if(compound.hasKey("Riches")) this.wealth = compound.getInteger("Riches");
+        if(compound.hasKey("Career")) this.careerId = compound.getInteger("Career");
+        if(compound.hasKey("CareerLevel")) this.careerLevel = compound.getInteger("CareerLevel");
 
         if(compound.hasKey("Offers", 10)) {
             NBTTagCompound nbttagcompound = compound.getCompoundTag("Offers");
