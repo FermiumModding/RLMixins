@@ -51,7 +51,7 @@ public class CommonProxy {
         if((ConfigHandler.SRPARASITES_CONFIG.armorFearCure || ConfigHandler.SRPARASITES_CONFIG.armorViralCure) && ModLoadedUtil.isSRParasitesLoaded()) {
             MinecraftForge.EVENT_BUS.register(ArmorCureHandler.class);
         }
-        if(ConfigHandler.SRPARASITES_CONFIG.rehandleAOEWeapons && ModLoadedUtil.isSRParasitesLoaded()) {
+        if(ConfigHandler.SRPARASITES_CONFIG.rehandleAOEWeapons && ModLoadedUtil.isSRParasitesLoaded() && ModLoadedUtil.isRLCombatLoaded()) {
             MinecraftForge.EVENT_BUS.register(WeaponAOEHandler.class);
         }
     }
