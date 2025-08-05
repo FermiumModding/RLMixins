@@ -85,6 +85,7 @@ public class ConfigHandler {
 				ConfigHandler.LYCANITESMOBS_CONFIG.refreshConfig();
 				ConfigHandler.RLCOMBAT_CONFIG.refreshConfig();
 				ConfigHandler.RLMIXINS_CONFIG.refreshConfig();
+				ConfigHandler.SCALINGHEALTH_CONFIG.refreshConfig();
 				ConfigHandler.SRPARASITES_CONFIG.refreshConfig();
 			}
 		}

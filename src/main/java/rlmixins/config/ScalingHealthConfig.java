@@ -1,9 +1,17 @@
 package rlmixins.config;
 
 import fermiumbooter.annotations.MixinConfig;
+import net.minecraft.potion.Potion;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.config.Config;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import rlmixins.RLMixins;
 import rlmixins.util.ModLoadedUtil;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @MixinConfig(name = RLMixins.MODID)
 public class ScalingHealthConfig {
@@ -29,4 +37,42 @@ public class ScalingHealthConfig {
 			reason = "Requires mod to properly function"
 	)
 	public boolean bandagedIconFix = false;
+
+	@Config.Comment("Allows to give blight entities additional potion effects to be constantly active.")
+	@Config.Name("Additional Blight Potion Effects (ScalingHealth)")
+	@Config.RequiresMcRestart
+	@MixinConfig.MixinToggle(lateMixin = "mixins.rlmixins.late.scalinghealth.blighteffects.json", defaultValue = false)
+	@MixinConfig.CompatHandling(
+			modid = ModLoadedUtil.ScalingHealth_MODID,
+			desired = true,
+			reason = "Requires mod to properly function"
+	)
+	public boolean enableAdditionalBlightPotionEffects = false;
+
+	@Config.Comment("The potion effects to apply on blights. Pattern: modid:potionname, amplifier")
+	@Config.Name("Additional Blight Potion Effects List")
+	public String[] additionalBlightffects = {};
+
+	public Map<Potion, Integer> blightEffects = null;
+
+	public Map<Potion, Integer> getBlightEffects() {
+		if(this.blightEffects == null) {
+			this.blightEffects = new HashMap<>();
+			for(String line : this.additionalBlightffects) {
+				String[] split = line.split(",");
+				Potion potion = ForgeRegistries.POTIONS.getValue(new ResourceLocation(split[0].trim()));
+				try {
+					int amplifier = Integer.parseInt(split[1].trim());
+					if (potion != null) this.blightEffects.put(potion, amplifier);
+				} catch (Exception e){
+					RLMixins.LOGGER.error("RLMixins unable to parse Blight Effect Line, expected number for amplifier in: {}", line);
+				}
+			}
+		}
+		return this.blightEffects;
+	}
+
+	public void refreshConfig() {
+		blightEffects.clear();
+	}
 }
