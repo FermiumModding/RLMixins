@@ -1,4 +1,4 @@
-package rlmixins.mixin.vanilla.zombietrades;
+package rlmixins.mixin.vanilla;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.passive.EntityVillager;
@@ -11,15 +11,20 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.common.registry.VillagerRegistry;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import rlmixins.handlers.ConfigHandler;
 import rlmixins.wrapper.IEntityVillagerMixin;
 import rlmixins.wrapper.IMerchantRecipeMixin;
 
 import javax.annotation.Nullable;
 
+/**
+ * Patch by Nischhelm
+ */
 @Mixin(EntityVillager.class)
-public abstract class EntityVillagerMixin extends EntityLivingBase implements IEntityVillagerMixin {
-    public EntityVillagerMixin(World worldIn) {
+public abstract class EntityVillager_KeepTradeMixin extends EntityLivingBase implements IEntityVillagerMixin {
+    
+    public EntityVillager_KeepTradeMixin(World worldIn) {
         super(worldIn);
     }
 
@@ -31,6 +36,7 @@ public abstract class EntityVillagerMixin extends EntityLivingBase implements IE
     @Shadow @Nullable private MerchantRecipeList buyingList;
 
     @Override
+    @Unique
     public void rlmixins$setTradesFromNBT(NBTTagCompound compound) {
         if(compound.hasKey("Profession")) this.setProfession(compound.getInteger("Profession"));
         if(compound.hasKey("ProfessionName")) {
@@ -47,11 +53,13 @@ public abstract class EntityVillagerMixin extends EntityLivingBase implements IE
             this.buyingList = new MerchantRecipeList(nbttagcompound);
 
             //Make trades worse :)
-            for(MerchantRecipe recipe : this.buyingList){
-                if(this.getRNG().nextFloat() < ConfigHandler.VANILLA_CONFIG.zombiesKeepTrades_chancePriceIncrease)
-                    ((IMerchantRecipeMixin) recipe).rlmixins$$increasePrices();
-                if(this.getRNG().nextFloat() < ConfigHandler.VANILLA_CONFIG.zombiesKeepTrades_chancePriceIncrease)
-                    ((IMerchantRecipeMixin) recipe).rlmixins$$denyXP();
+            for(MerchantRecipe recipe : this.buyingList) {
+                if(this.getRNG().nextFloat() < ConfigHandler.VANILLA_CONFIG.tradeChancePriceIncrease) {
+                    ((IMerchantRecipeMixin)recipe).rlmixins$increasePrices();
+                }
+                if(this.getRNG().nextFloat() < ConfigHandler.VANILLA_CONFIG.tradeChancePriceIncrease) {
+                    ((IMerchantRecipeMixin)recipe).rlmixins$denyXP();
+                }
             }
         }
     }

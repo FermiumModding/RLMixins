@@ -13,11 +13,20 @@ import rlmixins.handlers.ConfigHandler;
 
 import java.util.Map;
 
+/**
+ * Patch by Nischhelm
+ */
 @Mixin(BlightHandler.class)
 public abstract class BlightHandlerMixin {
-    @Inject(method = "applyBlightPotionEffects", at = @At("TAIL"))
+    
+    @Inject(
+            method = "applyBlightPotionEffects",
+            at = @At("TAIL"),
+            remap = false
+    )
     private static void rlmixins_scalingHealthBllightHandler_applyBlightPotionEffects(EntityLivingBase entityLiving, CallbackInfo ci, @Local int duration) {
-        for(Map.Entry<Potion, Integer> entry : ConfigHandler.SCALINGHEALTH_CONFIG.blightEffects.entrySet())
+        for(Map.Entry<Potion, Integer> entry : ConfigHandler.SCALINGHEALTH_CONFIG.getBlightEffects().entrySet()) {
             entityLiving.addPotionEffect(new PotionEffect(entry.getKey(), duration, entry.getValue(), true, false));
+        }
     }
 }

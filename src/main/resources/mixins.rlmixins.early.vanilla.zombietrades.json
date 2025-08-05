@@ -6,12 +6,9 @@
   "target": "@env(DEFAULT)",
   "minVersion": "0.8",
   "mixins": [
-    "vanilla.zombietrades.EntityVillagerMixin",
-    "vanilla.zombietrades.EntityZombieMixin",
-    "vanilla.zombietrades.EntityZombieVillagerMixin",
-    "vanilla.zombietrades.MerchantRecipeMixin"
-  ],
-  "injectors": {
-    "maxShiftBy": 10
-  }
+    "vanilla.EntityVillager_KeepTradeMixin",
+    "vanilla.EntityZombie_KeepTradeMixin",
+    "vanilla.EntityZombieVillager_KeepTradeMixin",
+    "vanilla.MerchantRecipe_KeepTradeMixin"
+  ]
 }

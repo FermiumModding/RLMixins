@@ -13,13 +13,14 @@ public class VanillaConfig {
 	@MixinConfig.MixinToggle(earlyMixin = "mixins.rlmixins.early.vanilla.concrete.json", defaultValue = false)
 	public boolean concretePowderSkipOnBlockAdded = false;
 
-	@Config.Comment("Makes zombie villagers keep their trades throughout zombification and curing.")
-	@Config.Name("Cured Zombie Villagers keep trades (Vanilla)")
+	@Config.Comment("Makes zombie villagers keep their trades throughout zombification and curing")
+	@Config.Name("Cured Zombie Villagers Keep Trades (Vanilla)")
 	@Config.RequiresMcRestart
 	@MixinConfig.MixinToggle(earlyMixin = "mixins.rlmixins.early.vanilla.zombietrades.json", defaultValue = false)
 	public boolean zombieVillagersKeepTrades = false;
 
-	@Config.Comment("Curing Zombie Villagers will have this chance to make them increase their prices and/or remove xp from some of their trades, per trade.")
+	@Config.Comment("Chance on curing zombie villagers to increase their prices and/or remove xp from some of their trades, per trade" + "\n" +
+			"Requires \"Cured Zombie Villagers Keep Trades (Vanilla)\" enabled")
 	@Config.Name("Curing Trauma Chance (Vanilla)")
-	public float zombiesKeepTrades_chancePriceIncrease = 0.0F;
+	public float tradeChancePriceIncrease = 0.0F;
 }

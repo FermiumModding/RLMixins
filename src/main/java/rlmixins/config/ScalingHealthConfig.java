@@ -8,9 +8,7 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import rlmixins.RLMixins;
 import rlmixins.util.ModLoadedUtil;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @MixinConfig(name = RLMixins.MODID)
@@ -38,7 +36,7 @@ public class ScalingHealthConfig {
 	)
 	public boolean bandagedIconFix = false;
 
-	@Config.Comment("Allows to give blight entities additional potion effects to be constantly active.")
+	@Config.Comment("Allows giving blights additional constantly active potion effects")
 	@Config.Name("Additional Blight Potion Effects (ScalingHealth)")
 	@Config.RequiresMcRestart
 	@MixinConfig.MixinToggle(lateMixin = "mixins.rlmixins.late.scalinghealth.blighteffects.json", defaultValue = false)
@@ -49,11 +47,12 @@ public class ScalingHealthConfig {
 	)
 	public boolean enableAdditionalBlightPotionEffects = false;
 
-	@Config.Comment("The potion effects to apply on blights. Pattern: modid:potionname, amplifier")
+	@Config.Comment("The potion effects to apply on blights (Format: modid:potionname, amplifier)" + "\n" +
+			"Requires \"Additional Blight Potion Effects (ScalingHealth)\" enabled")
 	@Config.Name("Additional Blight Potion Effects List")
 	public String[] additionalBlightffects = {};
 
-	public Map<Potion, Integer> blightEffects = null;
+	private Map<Potion, Integer> blightEffects = null;
 
 	public Map<Potion, Integer> getBlightEffects() {
 		if(this.blightEffects == null) {
@@ -63,7 +62,7 @@ public class ScalingHealthConfig {
 				Potion potion = ForgeRegistries.POTIONS.getValue(new ResourceLocation(split[0].trim()));
 				try {
 					int amplifier = Integer.parseInt(split[1].trim());
-					if (potion != null) this.blightEffects.put(potion, amplifier);
+					if(potion != null) this.blightEffects.put(potion, amplifier);
 				} catch (Exception e){
 					RLMixins.LOGGER.error("RLMixins unable to parse Blight Effect Line, expected number for amplifier in: {}", line);
 				}

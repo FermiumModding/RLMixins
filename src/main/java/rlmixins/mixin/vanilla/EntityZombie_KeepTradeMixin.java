@@ -1,4 +1,4 @@
-package rlmixins.mixin.vanilla.zombietrades;
+package rlmixins.mixin.vanilla;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
@@ -11,14 +11,17 @@ import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
+/**
+ * Patch by Nischhelm
+ */
 @Mixin(EntityZombie.class)
-public abstract class EntityZombieMixin {
+public abstract class EntityZombie_KeepTradeMixin {
 
     @WrapOperation(
             method = "onKillEntity",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;spawnEntity(Lnet/minecraft/entity/Entity;)Z")
     )
-    public boolean rlmixins_vanillaEntityZombie_spawnEntity(World world, Entity newZombieVillager, Operation<Boolean> original, @Local(name = "entityvillager") EntityVillager deadVillager) {
+    private boolean rlmixins_vanillaEntityZombie_spawnEntity(World world, Entity newZombieVillager, Operation<Boolean> original, @Local(name = "entityvillager") EntityVillager deadVillager) {
         NBTTagCompound villagerTags = new NBTTagCompound();
         deadVillager.writeToNBT(villagerTags);
 
