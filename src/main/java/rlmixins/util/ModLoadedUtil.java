@@ -24,9 +24,11 @@ public abstract class ModLoadedUtil {
 	public static final String RLCombat_MODID = "bettercombatmod";
 	public static final String Rustic_MODID = "rustic";
 	public static final String ScalingHealth_MODID = "scalinghealth";
+	public static final String SoManyEnchantments_MODID = "somanyenchantments";
 	public static final String SpartanWeaponry_MODID = "spartanweaponry";
 	public static final String SRParasites_MODID = "srparasites";
-	
+	public static final String TestDummy_MODID = "testdummy";
+
 	private static Boolean baublesLoaded = null;
 	private static Boolean betterSurvivalLoaded = null;
 	private static Boolean charmLoaded = null;

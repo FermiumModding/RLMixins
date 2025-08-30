@@ -70,6 +70,9 @@ public class ConfigHandler {
 	
 	@Config.Name("SRParasites Config")
 	public static final SRParasitesConfig SRPARASITES_CONFIG = new SRParasitesConfig();
+
+	@Config.Name("TestDummy Config")
+	public static final TestDummyConfig TESTDUMMY_CONFIG = new TestDummyConfig();
 	
 	@Config.Name("Vanilla Config")
 	public static final VanillaConfig VANILLA_CONFIG = new VanillaConfig();

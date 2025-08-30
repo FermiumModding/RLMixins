@@ -50,6 +50,7 @@ dependencies {
     implementation fg.deobf("curse.maven:inspirations-${inspirations_version}")
     implementation fg.deobf("curse.maven:jei-${jei_version}")
     implementation fg.deobf("curse.maven:lycanitesmobs-${lycanitesmobs_version}")
+    implementation fg.deobf("curse.maven:mmmmmmmmmmmm-${testdummy_version}")
     implementation fg.deobf("curse.maven:mobends-${mobends_version}")
     implementation fg.deobf("curse.maven:potioncore-${potioncore_version}")
     implementation fg.deobf("curse.maven:quark-${quark_version}")
@@ -57,6 +58,7 @@ dependencies {
     implementation fg.deobf("curse.maven:rlcombat-${rlcombat_version}")
     implementation fg.deobf("curse.maven:rustic-${rustic_version}")
     implementation fg.deobf("curse.maven:scalinghealth-${scalinghealth_version}")
+    implementation fg.deobf("curse.maven:somanyenchantments-${somanyenchantments_version}")
     implementation fg.deobf("curse.maven:spartanweaponry-${spartanweaponry_version}")
 
     //CurseMaven Libs
