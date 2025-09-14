@@ -42,10 +42,13 @@ dependencies {
     implementation fg.deobf("curse.maven:betterquesting-${betterquesting_version}")
     implementation fg.deobf("curse.maven:bettersurvival-${bettersurvival_version}")
     implementation fg.deobf("curse.maven:callablehorses-${callablehorses_version}")
+    implementation fg.deobf("curse.maven:champions-${champions_version}")
     implementation fg.deobf("curse.maven:charm-${charm_version}")
     implementation fg.deobf("curse.maven:chunkanimator-${chunkanimator_version}")
     implementation fg.deobf("curse.maven:defiledlands-${defiledlands_version}")
+    implementation fg.deobf("curse.maven:distinctdamagedescriptions-${distinctdamagedescriptions_version}")
     implementation fg.deobf("curse.maven:epicsiegemod-${epicsiegemod_version}")
+    implementation fg.deobf("curse.maven:infernalmobs-${infernalmobs_version}")
     implementation fg.deobf("curse.maven:infrlcraft-${infrlcraft_version}")
     implementation fg.deobf("curse.maven:inspirations-${inspirations_version}")
     implementation fg.deobf("curse.maven:jei-${jei_version}")
@@ -58,7 +61,8 @@ dependencies {
     implementation fg.deobf("curse.maven:rlcombat-${rlcombat_version}")
     implementation fg.deobf("curse.maven:rustic-${rustic_version}")
     implementation fg.deobf("curse.maven:scalinghealth-${scalinghealth_version}")
-    implementation fg.deobf("curse.maven:somanyenchantments-${somanyenchantments_version}")
+    //implementation fg.deobf("curse.maven:somanyenchantments-${somanyenchantments_version}")
+    implementation fg.deobf("libs:SoManyEnchantments:${somanyenchantments_version}")
     implementation fg.deobf("curse.maven:spartanweaponry-${spartanweaponry_version}")
 
     //CurseMaven Libs

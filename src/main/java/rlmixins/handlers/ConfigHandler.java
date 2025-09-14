@@ -67,6 +67,9 @@ public class ConfigHandler {
 	
 	@Config.Name("ScalingHealth Config")
 	public static final ScalingHealthConfig SCALINGHEALTH_CONFIG = new ScalingHealthConfig();
+
+	@Config.Name("SoManyEnchantments Config")
+	public static final SMEConfig SME_CONFIG = new SMEConfig();
 	
 	@Config.Name("SRParasites Config")
 	public static final SRParasitesConfig SRPARASITES_CONFIG = new SRParasitesConfig();

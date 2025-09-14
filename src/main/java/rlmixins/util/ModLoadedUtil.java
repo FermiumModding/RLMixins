@@ -9,10 +9,13 @@ public abstract class ModLoadedUtil {
 	public static final String BetterQuesting_MODID = "betterquesting";
 	public static final String BetterSurvival_MODID = "mujmajnkraftsbettersurvival";
 	public static final String CallableHorses_MODID = "callablehorses";
+	public static final String Champions_MODID = "champions";
 	public static final String Charm_MODID = "charm";
 	public static final String ChunkAnimator_MODID = "chunkanimator";
 	public static final String DefiledLands_MODID = "defiledlands";
+	public static final String DistinctDamageDescriptions_MODID = "distinctdamagedescriptions";
 	public static final String EpicSiegeMod_MODID = "epicsiegemod";
+	public static final String InfernalMobs_MODID = "infernalmobs";
 	public static final String InFRLCraft_MODID = "iceandfire";
 	public static final String Inspirations_MODID = "inspirations";
 	public static final String JEI_MODID = "jei";
@@ -33,11 +36,13 @@ public abstract class ModLoadedUtil {
 	private static Boolean betterSurvivalLoaded = null;
 	private static Boolean charmLoaded = null;
 	private static Boolean chunkAnimatorLoaded = null;
+	private static Boolean dddLoaded = null;
 	private static Boolean potionCoreLoaded = null;
 	private static Boolean quarkLoaded = null;
 	private static Boolean rlArtifactsLoaded = null;
 	private static Boolean rlcombatLoaded = null;
 	private static Boolean scalingHealthLoaded = null;
+	private static Boolean smeLoaded = null;
 	private static Boolean spartanWeaponryLoaded = null;
 	private static Boolean srparasitesLoaded = null;
 	
@@ -59,6 +64,11 @@ public abstract class ModLoadedUtil {
 	public static boolean isChunkAnimatorLoaded() {
 		if(chunkAnimatorLoaded == null) chunkAnimatorLoaded = Loader.isModLoaded(ChunkAnimator_MODID);
 		return chunkAnimatorLoaded;
+	}
+
+	public static boolean isDDDLoaded() {
+		if(dddLoaded == null) dddLoaded = Loader.isModLoaded(DistinctDamageDescriptions_MODID);
+		return dddLoaded;
 	}
 	
 	public static boolean isPotionCoreLoaded() {
@@ -84,6 +94,11 @@ public abstract class ModLoadedUtil {
 	public static boolean isScalingHealthLoaded() {
 		if(scalingHealthLoaded == null) scalingHealthLoaded = Loader.isModLoaded(ScalingHealth_MODID);
 		return scalingHealthLoaded;
+	}
+
+	public static boolean isSMELoaded() {
+		if(smeLoaded == null) smeLoaded = Loader.isModLoaded(SoManyEnchantments_MODID);
+		return smeLoaded;
 	}
 	
 	public static boolean isSpartanWeaponryLoaded() {

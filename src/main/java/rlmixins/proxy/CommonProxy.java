@@ -11,6 +11,7 @@ import rlmixins.handlers.rlartifacts.AntidoteHandler;
 import rlmixins.handlers.rlcombat.NetherBaneHandler;
 import rlmixins.handlers.rlmixins.LesserFireResistanceHandler;
 import rlmixins.handlers.rlmixins.MobNauseaHandler;
+import rlmixins.handlers.somanyenchantments.SubjectGeographyHandler;
 import rlmixins.handlers.srparasites.ArmorCureHandler;
 import rlmixins.handlers.srparasites.WeaponAOEHandler;
 import rlmixins.handlers.vanilla.SlimeProjectileBounceHandler;
@@ -47,6 +48,11 @@ public class CommonProxy {
         }
         if(ConfigHandler.RLMIXINS_CONFIG.slimeBouncySides) {
             MinecraftForge.EVENT_BUS.register(SlimeProjectileBounceHandler.class);
+        }
+        if(ConfigHandler.SME_CONFIG.changeSubjectEnhants &&
+                ModLoadedUtil.isSMELoaded() &&
+                ModLoadedUtil.isDDDLoaded()) {
+            MinecraftForge.EVENT_BUS.register(SubjectGeographyHandler.class);
         }
         if((ConfigHandler.SRPARASITES_CONFIG.armorFearCure || ConfigHandler.SRPARASITES_CONFIG.armorViralCure) && ModLoadedUtil.isSRParasitesLoaded()) {
             MinecraftForge.EVENT_BUS.register(ArmorCureHandler.class);

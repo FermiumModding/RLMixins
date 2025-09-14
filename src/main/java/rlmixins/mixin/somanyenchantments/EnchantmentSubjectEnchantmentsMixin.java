@@ -1,0 +1,89 @@
+package rlmixins.mixin.somanyenchantments;
+
+import atomicstryker.infernalmobs.common.InfernalMobsCore;
+import c4.champions.common.capability.CapabilityChampionship;
+import c4.champions.common.capability.IChampionship;
+import c4.champions.common.util.ChampionHelper;
+import com.llamalad7.mixinextras.sugar.Local;
+import com.shultrea.rin.enchantments.weapon.subject.EnchantmentSubjectEnchantments;
+import com.shultrea.rin.registry.EnchantmentRegistry;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.util.math.BlockPos;
+import net.silentchaos512.scalinghealth.event.BlightHandler;
+import org.spongepowered.asm.mixin.Final;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.ModifyArg;
+
+@Mixin(EnchantmentSubjectEnchantments.class)
+public abstract class EnchantmentSubjectEnchantmentsMixin {
+    @Shadow(remap = false) @Final private int damageType;
+    @Shadow(remap = false) @Final private static int BIOLOGY;
+    @Shadow(remap = false) @Final private static int HISTORY;
+
+    @Unique private static final String KEY_SUBJHISTORY_POS = "rlmixins_SME_SubjHistory_LastPosition";
+    @Unique private static final String KEY_SUBJHISTORY_CNTR = "rlmixins_SME_SubjHistory_Counter";
+
+    @Unique
+    //copied from FermiumMixins
+    private static boolean fermiummixins$isEntityChampion(EntityLiving entity) {
+        IChampionship championship = CapabilityChampionship.getChampionship(entity);
+        return championship != null && ChampionHelper.isElite(championship.getRank());
+    }
+
+    @ModifyArg(
+            method = "onLivingHurtEvent",
+            at = @At(value = "INVOKE", target = "Lnet/minecraftforge/event/entity/living/LivingHurtEvent;setAmount(F)V"),
+            remap = false
+    )
+    private float rlmixins_soManyEnchantmentsSubjectEnchantments_onLivingHurtEvent(
+            float amount,
+            @Local(name = "attacker") EntityLivingBase attacker,
+            @Local(name = "victim") EntityLivingBase defender,
+            @Local(name = "level") int level
+    ){
+        if(this.damageType == BIOLOGY) {
+            // More dmg on infernal/blight/champion
+            float dmg = 0;
+
+            boolean isInfernal = InfernalMobsCore.getIsRareEntity(defender);
+            boolean isBlight = BlightHandler.isBlight(defender);
+            boolean isChampion = defender instanceof EntityLiving && fermiummixins$isEntityChampion((EntityLiving) defender);
+
+            if(isInfernal) dmg += 5;
+            if(isBlight) dmg += 5;
+            if(isChampion) dmg += 5;
+            dmg *= (float) level / EnchantmentRegistry.subjectHistory.getMaxLevel();
+            return dmg;
+
+        } else if(this.damageType == HISTORY) {
+            //Standing in same spot for longer makes you deal more dmg
+            int[] posList = attacker.getEntityData().getIntArray(KEY_SUBJHISTORY_POS); //int[0] if not found
+            int attacksWithoutMoving = attacker.getEntityData().getInteger(KEY_SUBJHISTORY_CNTR); //0 if not found
+
+            boolean playerHasMoved = true;
+            BlockPos currPos = attacker.getPosition();
+
+            if(posList.length == 3)
+                playerHasMoved = currPos.distanceSqToCenter(posList[0], posList[1], posList[2]) > 16; //player is allowed to move 4 blocks from initial position
+
+            //save position if never saved before or if player moved
+            if(playerHasMoved) {
+                if(posList.length == 0) posList = new int[3];
+                posList[0] = currPos.getX();
+                posList[1] = currPos.getY();
+                posList[2] = currPos.getZ();
+                attacker.getEntityData().setIntArray(KEY_SUBJHISTORY_POS, posList);
+            }
+            //set counter to 1 for first attack or increment, position stays the one from first attack during most recent streak
+            attacker.getEntityData().setInteger(KEY_SUBJHISTORY_CNTR, attacksWithoutMoving + 1);
+            //for dmg the counter before is used (starts at 0)
+            return Math.min(attacksWithoutMoving / 10F * 7.5F, 7.5F) * level / EnchantmentRegistry.subjectHistory.getMaxLevel(); //caps out at 7.5F at 10+1 attacks without moving
+        }
+        return amount;
+    }
+    //Subject Geography x DDD handled in rlmixins.handlers.somanyenchantments.SubjectGeographyHandler
+}
