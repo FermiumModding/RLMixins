@@ -11,6 +11,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import yeelp.distinctdamagedescriptions.api.DDDDamageType;
 import yeelp.distinctdamagedescriptions.api.impl.DDDBuiltInDamageType;
 import yeelp.distinctdamagedescriptions.event.classification.DetermineDamageEvent;
+import yeelp.distinctdamagedescriptions.registries.DDDRegistries;
 
 import java.util.Set;
 
@@ -24,27 +25,33 @@ public class SubjectGeographyHandler {
         if (lvl <= 0) return;
 
         float strengthMulti = CompatUtil.isRLCombatLoaded() ? RLCombatCompat.getAttackEntityFromStrength() : 1.0F;
-        float addedDmg = (5.0F * strengthMulti * lvl) / EnchantmentRegistry.subjectGeography.getMaxLevel(); //caps out at +5 for max lvl and full hit
+        float percentage = strengthMulti * lvl / EnchantmentRegistry.subjectGeography.getMaxLevel(); //caps out at 100% for max lvl and full hit
 
         Set<BiomeDictionary.Type> types = BiomeDictionary.getTypes(attacker.world.getBiome(attacker.getPosition()));
 
         if (types.contains(BiomeDictionary.Type.HOT) || types.contains(BiomeDictionary.Type.NETHER))
-            addDmgForType(event, DDDBuiltInDamageType.FIRE, addedDmg);
+            setDmgToType(event, DDDBuiltInDamageType.FIRE, percentage);
         else if (types.contains(BiomeDictionary.Type.COLD) || types.contains(BiomeDictionary.Type.SNOWY))
-            addDmgForType(event, DDDBuiltInDamageType.COLD, addedDmg);
+            setDmgToType(event, DDDBuiltInDamageType.COLD, percentage);
         else if (types.contains(BiomeDictionary.Type.SWAMP))
-            addDmgForType(event, DDDBuiltInDamageType.POISON, addedDmg);
+            setDmgToType(event, DDDBuiltInDamageType.POISON, percentage);
         else if (types.contains(BiomeDictionary.Type.WASTELAND))
-            addDmgForType(event, DDDBuiltInDamageType.ACID, addedDmg);
+            setDmgToType(event, DDDBuiltInDamageType.ACID, percentage);
         else if (types.contains(BiomeDictionary.Type.SPOOKY) || types.contains(BiomeDictionary.Type.DEAD))
-            addDmgForType(event, DDDBuiltInDamageType.NECROTIC, addedDmg);
+            setDmgToType(event, DDDBuiltInDamageType.NECROTIC, percentage);
         else if (types.contains(BiomeDictionary.Type.MAGICAL))
-            addDmgForType(event, DDDBuiltInDamageType.RADIANT, addedDmg);
-        else
-            addDmgForType(event, DDDBuiltInDamageType.NORMAL, addedDmg);
+            setDmgToType(event, DDDBuiltInDamageType.RADIANT, percentage);
+        //Otherwise no effect
     }
 
-    private static void addDmgForType(DetermineDamageEvent event, DDDDamageType type, float amount){
-        event.setDamage(type, event.getDamage(type) + amount);
+    private static void setDmgToType(DetermineDamageEvent event, DDDDamageType type, float percentage) {
+        double totalDmg = DDDRegistries.damageTypes.getAll().stream().mapToDouble(event::getDamage).sum();
+        double dmgNewType = percentage * totalDmg;
+        //reduce all
+        DDDRegistries.damageTypes.getAll().forEach(dmgType ->
+                event.setDamage(dmgType, event.getDamage(dmgType) * (1 - percentage))
+        );
+        //increase specific
+        event.setDamage(type, (float) (event.getDamage(type) + dmgNewType));
     }
 }
