@@ -61,8 +61,7 @@ dependencies {
     implementation fg.deobf("curse.maven:rlcombat-${rlcombat_version}")
     implementation fg.deobf("curse.maven:rustic-${rustic_version}")
     implementation fg.deobf("curse.maven:scalinghealth-${scalinghealth_version}")
-    //implementation fg.deobf("curse.maven:somanyenchantments-${somanyenchantments_version}")
-    implementation fg.deobf("libs:SoManyEnchantments:${somanyenchantments_version}")
+    implementation fg.deobf("curse.maven:somanyenchantments-${somanyenchantments_version}")
     implementation fg.deobf("curse.maven:spartanweaponry-${spartanweaponry_version}")
 
     //CurseMaven Libs
