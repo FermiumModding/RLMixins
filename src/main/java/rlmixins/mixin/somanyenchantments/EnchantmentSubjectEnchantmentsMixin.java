@@ -10,13 +10,15 @@ import com.shultrea.rin.registry.EnchantmentRegistry;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.silentchaos512.scalinghealth.event.BlightHandler;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.ModifyArg;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(EnchantmentSubjectEnchantments.class)
 public abstract class EnchantmentSubjectEnchantmentsMixin {
@@ -34,16 +36,19 @@ public abstract class EnchantmentSubjectEnchantmentsMixin {
         return championship != null && ChampionHelper.isElite(championship.getRank());
     }
 
-    @ModifyArg(
+    @Inject(
             method = "onLivingHurtEvent",
-            at = @At(value = "INVOKE", target = "Lnet/minecraftforge/event/entity/living/LivingHurtEvent;setAmount(F)V"),
-            remap = false
+            at = @At(value = "FIELD", target = "Lcom/shultrea/rin/enchantments/weapon/subject/EnchantmentSubjectEnchantments;damageType:I", ordinal = 0),
+            remap = false,
+            cancellable = true
     )
-    private float rlmixins_soManyEnchantmentsSubjectEnchantments_onLivingHurtEvent(
-            float amount,
+    private void rlmixins_soManyEnchantmentsSubjectEnchantments_onLivingHurt(
+            LivingHurtEvent event,
+            CallbackInfo ci,
             @Local(name = "attacker") EntityLivingBase attacker,
             @Local(name = "victim") EntityLivingBase defender,
-            @Local(name = "level") int level
+            @Local(name = "level") int level,
+            @Local(name = "strengthMulti") float strengthMulti
     ){
         if(this.damageType == BIOLOGY) {
             // More dmg on infernal/blight/champion
@@ -56,8 +61,9 @@ public abstract class EnchantmentSubjectEnchantmentsMixin {
             if(isInfernal) dmg += 5;
             if(isBlight) dmg += 5;
             if(isChampion) dmg += 5;
-            dmg *= (float) level / EnchantmentRegistry.subjectBiology.getMaxLevel();
-            return dmg;
+            dmg *= level / (float) EnchantmentRegistry.subjectBiology.getMaxLevel() * strengthMulti;
+            event.setAmount(event.getAmount() + dmg);
+            ci.cancel();
 
         } else if(this.damageType == HISTORY) {
             //Standing in same spot for longer makes you deal more dmg
@@ -77,13 +83,16 @@ public abstract class EnchantmentSubjectEnchantmentsMixin {
                 posList[1] = currPos.getY();
                 posList[2] = currPos.getZ();
                 attacker.getEntityData().setIntArray(KEY_SUBJHISTORY_POS, posList);
+                attacksWithoutMoving = 0;
             }
             //set counter to 1 for first attack or increment, position stays the one from first attack during most recent streak
             attacker.getEntityData().setInteger(KEY_SUBJHISTORY_CNTR, attacksWithoutMoving + 1);
             //for dmg the counter before is used (starts at 0)
-            return Math.min(attacksWithoutMoving / 10F * 7.5F, 7.5F) * level / EnchantmentRegistry.subjectHistory.getMaxLevel(); //caps out at 7.5F at 10+1 attacks without moving
+            float dmg = Math.min(attacksWithoutMoving / 10F * 7.5F, 7.5F) * level / (float) EnchantmentRegistry.subjectHistory.getMaxLevel() * strengthMulti; //caps out at 7.5F at 10+1 attacks without moving
+            event.setAmount(event.getAmount() + dmg);
+            ci.cancel();
         }
-        return amount;
     }
+
     //Subject Geography x DDD handled in rlmixins.handlers.somanyenchantments.SubjectGeographyHandler
 }
