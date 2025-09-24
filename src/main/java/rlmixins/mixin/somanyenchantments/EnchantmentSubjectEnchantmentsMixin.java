@@ -56,7 +56,7 @@ public abstract class EnchantmentSubjectEnchantmentsMixin {
             if(isInfernal) dmg += 5;
             if(isBlight) dmg += 5;
             if(isChampion) dmg += 5;
-            dmg *= (float) level / EnchantmentRegistry.subjectHistory.getMaxLevel();
+            dmg *= (float) level / EnchantmentRegistry.subjectBiology.getMaxLevel();
             return dmg;
 
         } else if(this.damageType == HISTORY) {
