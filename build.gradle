@@ -3,6 +3,7 @@ plugins {
     id 'idea'
     id 'net.minecraftforge.gradle' version "${forge_gradle_version}"
     id 'org.spongepowered.mixin' version "${mixin_gradle_version}"
+    id 'wtf.gofancy.fancygradle' version "${fancy_gradle_version}"
 }
 
 version = mod_version
@@ -13,6 +14,33 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(8)
 
 minecraft {
     mappings channel: mappings_channel, version: mappings_version
+
+    runs {
+        client {
+            args "--username=InDev"
+
+            jvmArg "-Dfml.coreMods.load=${mixin_loader_class}"
+            jvmArg "-Dmixin.hotSwap=true"
+            jvmArg "-Dmixin.checks.interfaces=true"
+
+            workingDirectory project.file('run')
+
+            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+            property 'forge.logging.console.level', 'debug'
+        }
+
+        server {
+
+            jvmArg "-Dfml.coreMods.load=${mixin_loader_class}"
+            jvmArg "-Dmixin.hotSwap=true"
+            jvmArg "-Dmixin.checks.interfaces=true"
+
+            workingDirectory project.file('run')
+
+            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+            property 'forge.logging.console.level', 'debug'
+        }
+    }
 }
 
 repositories {
@@ -25,48 +53,57 @@ dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
     //Mixin
-    implementation "org.spongepowered:mixin:${mixin_version}"
+    compileOnly "org.spongepowered:mixin:${mixin_version}"
     annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
-    implementation "io.github.llamalad7:mixinextras-common:${mixin_extras_version}"
+    compileOnly "io.github.llamalad7:mixinextras-common:${mixin_extras_version}"
     annotationProcessor "io.github.llamalad7:mixinextras-common:${mixin_extras_version}"
 
     //FermiumBooter
     implementation fg.deobf("curse.maven:fermiumbooter-${fermiumbooter_version}")
 
 	//FlatDir Mods
-    implementation fg.deobf("libs:SRParasites:${srparasites_version}") //Third party distro disabled
+    compileOnly fg.deobf("libs:SRParasites:${srparasites_version}") //Third party distro disabled
 
     //CurseMaven Mods
-    implementation fg.deobf("curse.maven:baubles-${baubles_version}")
-    implementation fg.deobf("curse.maven:betterfoliage-${betterfoliage_version}")
-    implementation fg.deobf("curse.maven:betterquesting-${betterquesting_version}")
-    implementation fg.deobf("curse.maven:bettersurvival-${bettersurvival_version}")
-    implementation fg.deobf("curse.maven:callablehorses-${callablehorses_version}")
-    implementation fg.deobf("curse.maven:champions-${champions_version}")
-    implementation fg.deobf("curse.maven:charm-${charm_version}")
-    implementation fg.deobf("curse.maven:chunkanimator-${chunkanimator_version}")
-    implementation fg.deobf("curse.maven:defiledlands-${defiledlands_version}")
-    implementation fg.deobf("curse.maven:distinctdamagedescriptions-${distinctdamagedescriptions_version}")
-    implementation fg.deobf("curse.maven:epicsiegemod-${epicsiegemod_version}")
-    implementation fg.deobf("curse.maven:infernalmobs-${infernalmobs_version}")
-    implementation fg.deobf("curse.maven:infrlcraft-${infrlcraft_version}")
-    implementation fg.deobf("curse.maven:inspirations-${inspirations_version}")
-    implementation fg.deobf("curse.maven:jei-${jei_version}")
-    implementation fg.deobf("curse.maven:lycanitesmobs-${lycanitesmobs_version}")
-    implementation fg.deobf("curse.maven:mmmmmmmmmmmm-${testdummy_version}")
-    implementation fg.deobf("curse.maven:mobends-${mobends_version}")
-    implementation fg.deobf("curse.maven:potioncore-${potioncore_version}")
-    implementation fg.deobf("curse.maven:quark-${quark_version}")
-    implementation fg.deobf("curse.maven:rlartifacts-${rlartifacts_version}")
-    implementation fg.deobf("curse.maven:rlcombat-${rlcombat_version}")
-    implementation fg.deobf("curse.maven:rustic-${rustic_version}")
-    implementation fg.deobf("curse.maven:scalinghealth-${scalinghealth_version}")
-    implementation fg.deobf("curse.maven:somanyenchantments-${somanyenchantments_version}")
-    implementation fg.deobf("curse.maven:spartanweaponry-${spartanweaponry_version}")
+    compileOnly fg.deobf("curse.maven:baubles-${baubles_version}")
+    compileOnly fg.deobf("curse.maven:betterfoliage-${betterfoliage_version}")
+    compileOnly fg.deobf("curse.maven:betterquesting-${betterquesting_version}")
+    compileOnly fg.deobf("curse.maven:bettersurvival-${bettersurvival_version}")
+    compileOnly fg.deobf("curse.maven:callablehorses-${callablehorses_version}")
+    compileOnly fg.deobf("curse.maven:champions-${champions_version}")
+    compileOnly fg.deobf("curse.maven:charm-${charm_version}")
+    compileOnly fg.deobf("curse.maven:chunkanimator-${chunkanimator_version}")
+    compileOnly fg.deobf("curse.maven:defiledlands-${defiledlands_version}")
+    compileOnly fg.deobf("curse.maven:distinctdamagedescriptions-${distinctdamagedescriptions_version}")
+    compileOnly fg.deobf("curse.maven:epicsiegemod-${epicsiegemod_version}")
+    compileOnly fg.deobf("curse.maven:infernalmobs-${infernalmobs_version}")
+    compileOnly fg.deobf("curse.maven:infrlcraft-${infrlcraft_version}")
+    compileOnly fg.deobf("curse.maven:inspirations-${inspirations_version}")
+    compileOnly fg.deobf("curse.maven:jei-${jei_version}")
+    compileOnly fg.deobf("curse.maven:lycanitesmobs-${lycanitesmobs_version}")
+    compileOnly fg.deobf("curse.maven:mmmmmmmmmmmm-${testdummy_version}")
+    compileOnly fg.deobf("curse.maven:mobends-${mobends_version}")
+    compileOnly fg.deobf("curse.maven:potioncore-${potioncore_version}")
+    compileOnly fg.deobf("curse.maven:quark-${quark_version}")
+    compileOnly fg.deobf("curse.maven:rlartifacts-${rlartifacts_version}")
+    compileOnly fg.deobf("curse.maven:rlcombat-${rlcombat_version}")
+    compileOnly fg.deobf("curse.maven:rustic-${rustic_version}")
+    compileOnly fg.deobf("curse.maven:scalinghealth-${scalinghealth_version}")
+    compileOnly fg.deobf("curse.maven:somanyenchantments-${somanyenchantments_version}")
+    compileOnly fg.deobf("curse.maven:spartanweaponry-${spartanweaponry_version}")
 
     //CurseMaven Libs
-    implementation fg.deobf("curse.maven:autoreglib-${autoreglib_version}")
-    implementation fg.deobf("curse.maven:llibrary-${llibrary_version}")
+    compileOnly fg.deobf("curse.maven:autoreglib-${autoreglib_version}")
+    compileOnly fg.deobf("curse.maven:llibrary-${llibrary_version}")
+}
+
+fancyGradle {
+    patches {
+        resources
+        coremods
+        asm
+        mergetool
+    }
 }
 
 mixin {
@@ -92,19 +129,38 @@ processResources {
 
 jar {
     manifest {
-        attributes([
-                'Specification-Title'     : mod_name,
-                'Specification-Vendor'    : mod_author,
-                'Specification-Version'   : '1',
-                'Implementation-Title'    : mod_name,
-                'Implementation-Vendor'   : mod_author,
-                'Implementation-Version'  : mod_version,
-                'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
-                'FMLCorePlugin': mixin_loader_class,
-                'FMLCorePluginContainsFMLMod': 'true',
-                'ForceLoadAsMod': 'true', //Comment out in dev environment, uncomment for building
-                'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker'
-        ])
+        def attr = [:]
+        attr['Specification-Title']         = mod_name
+        attr['Specification-Vendor']        = mod_author
+        attr['Specification-Version']       = '1'
+        attr['Implementation-Title']        = mod_name
+        attr['Implementation-Vendor']       = mod_author
+        attr['Implementation-Version']      = mod_version
+        attr['Implementation-Timestamp']    = new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+        attr['FMLCorePlugin']               = mixin_loader_class
+        attr['FMLCorePluginContainsFMLMod'] = 'true'
+        attr['TweakClass']                  = 'org.spongepowered.asm.launch.MixinTweaker'
+        attr['ForceLoadAsMod']              = "true"
+
+        def currentTasks = gradle.startParameter.taskNames
+        if (currentTasks[0] == 'build' || currentTasks[0] == 'assemble')
+            attr['ForceLoadAsMod'] = "true"
+        attributes(attr)
+    }
+}
+
+//This task is only for copying output.jar into run/mods/ so when running indev fermiumbooter finds the jar to check for @MixinConfig annotations
+tasks.register("copyReobfJar", Copy) {
+    dependsOn("reobfJar")
+
+    from(layout.buildDirectory.file("reobfJar/output.jar"))
+    into(layout.projectDirectory.dir("run/mods"))
+    rename("output.jar", "${mod_name}-${mod_version}.jar")
+}
+
+afterEvaluate {
+    tasks.matching { it.name.startsWith("reobfJar") }.configureEach {
+        finalizedBy("copyReobfJar")
     }
 }
 
