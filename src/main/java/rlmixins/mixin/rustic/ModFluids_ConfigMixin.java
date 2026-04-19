@@ -13,9 +13,12 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
+import rlmixins.config.RusticConfig;
 import rlmixins.handlers.ConfigHandler;
 import rustic.common.blocks.fluids.FluidBooze;
 import rustic.common.blocks.fluids.ModFluids;
+
+import java.util.Arrays;
 
 @Mixin(ModFluids.class)
 public abstract class ModFluids_ConfigMixin {
@@ -152,7 +155,10 @@ public abstract class ModFluids_ConfigMixin {
                     player.getFoodStats().addStats(1, saturation);
                     PotionEffect[] effects = player.getActivePotionEffects().toArray(new PotionEffect[0]);
                     for(PotionEffect potionEffect : effects) {
-                        if(!potionEffect.getPotion().isBadEffect() && potionEffect.getAmplifier() < ConfigHandler.RUSTIC_CONFIG.wildberryWineMaxAmplifier) {
+                        if(potionEffect.getPotion().isBadEffect()) continue;
+                        if(RusticConfig.isUnwineable(potionEffect.getPotion())) continue;
+
+                        if(potionEffect.getAmplifier() < ConfigHandler.RUSTIC_CONFIG.wildberryWineMaxAmplifier) {
                             if(world.rand.nextFloat() <= (quality - 0.5F) * 2.0F) {
                                 player.addPotionEffect(new PotionEffect(potionEffect.getPotion(), potionEffect.getDuration(), Math.min(potionEffect.getAmplifier() + ConfigHandler.RUSTIC_CONFIG.wildberryWineMaxAmplifierIncrease, ConfigHandler.RUSTIC_CONFIG.wildberryWineMaxAmplifier), potionEffect.getIsAmbient(), potionEffect.doesShowParticles()));
                             }
@@ -162,12 +168,13 @@ public abstract class ModFluids_ConfigMixin {
                 else {
                     PotionEffect[] effects = player.getActivePotionEffects().toArray(new PotionEffect[0]);
                     for(PotionEffect effect : effects) {
-                        if(!effect.getPotion().isBadEffect()) {
-                            int amp = effect.getAmplifier() - ConfigHandler.RUSTIC_CONFIG.wildberryWineAmplifierDecrease;
-                            player.removePotionEffect(effect.getPotion());
-                            if(amp >= 0) {
-                                player.addPotionEffect(new PotionEffect(effect.getPotion(), effect.getDuration(), amp, effect.getIsAmbient(), effect.doesShowParticles()));
-                            }
+                        if(effect.getPotion().isBadEffect()) continue;
+                        if(RusticConfig.isUnwineable(effect.getPotion())) continue;
+
+                        int amp = effect.getAmplifier() - ConfigHandler.RUSTIC_CONFIG.wildberryWineAmplifierDecrease;
+                        player.removePotionEffect(effect.getPotion());
+                        if(amp >= 0) {
+                            player.addPotionEffect(new PotionEffect(effect.getPotion(), effect.getDuration(), amp, effect.getIsAmbient(), effect.doesShowParticles()));
                         }
                     }
                     int duration = (int)(ConfigHandler.RUSTIC_CONFIG.wildberryWineMaxDurationNausea * Math.max(1.0F - quality, 0));
@@ -191,6 +198,8 @@ public abstract class ModFluids_ConfigMixin {
                     player.getFoodStats().addStats(1, saturation);
                     PotionEffect[] effects = player.getActivePotionEffects().toArray(new PotionEffect[0]);
                     for(PotionEffect effect : effects) {
+                        if(RusticConfig.isUnwineable(effect.getPotion())) continue;
+
                         int durationIncrease = (int)(ConfigHandler.RUSTIC_CONFIG.wineMaximumDurationIncrease * (quality - 0.5F) * 2.0F);
                         if(!effect.getPotion().isBadEffect() && effect.getDuration() < (int)ConfigHandler.RUSTIC_CONFIG.wineMaximumDuration) {
                             int duration = Math.max(Math.min(effect.getDuration() + durationIncrease, (int)ConfigHandler.RUSTIC_CONFIG.wineMaximumDuration), effect.getDuration());
@@ -201,6 +210,8 @@ public abstract class ModFluids_ConfigMixin {
                 else {
                     PotionEffect[] effects = player.getActivePotionEffects().toArray(new PotionEffect[0]);
                     for(PotionEffect effect : effects) {
+                        if(RusticConfig.isUnwineable(effect.getPotion())) continue;
+
                         int durationDecrease = (int)(ConfigHandler.RUSTIC_CONFIG.wineMaximumDurationDecrease * Math.max(0.5F - quality, 0));
                         if(!effect.getPotion().isBadEffect()) {
                             int duration = effect.getDuration() - durationDecrease;

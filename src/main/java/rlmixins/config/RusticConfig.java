@@ -1,9 +1,17 @@
 package rlmixins.config;
 
 import fermiumbooter.annotations.MixinConfig;
+import net.minecraft.potion.Potion;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.config.Config;
 import rlmixins.RLMixins;
+import rlmixins.handlers.ConfigHandler;
 import rlmixins.util.ModLoadedUtil;
+
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @MixinConfig(name = RLMixins.MODID)
 public class RusticConfig {
@@ -145,4 +153,17 @@ public class RusticConfig {
 	@Config.Comment("Inebriation chance when drinking wine")
 	@Config.Name("Wine Inebriation Chance")
 	public float wineInebriationChance = 0.5F;
+
+	@Config.Comment("List of modid:potionid potions that are not affected by wine and wildberry wine")
+	@Config.Name("Unwineable Potions")
+	public String[] unwineablePotions = {};
+
+	private static Set<String> unwineablePots = null;
+
+	public static boolean isUnwineable(Potion potion) {
+		if(unwineablePots == null) unwineablePots = Stream.of(ConfigHandler.RUSTIC_CONFIG.unwineablePotions).collect(Collectors.toSet());
+		ResourceLocation loc = potion.getRegistryName();
+		if(loc == null) return false;
+		return unwineablePots.contains(loc.toString());
+	}
 }
