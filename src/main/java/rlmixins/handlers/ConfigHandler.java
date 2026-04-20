@@ -31,6 +31,9 @@ public class ConfigHandler {
 	
 	@Config.Name("EpicSiegeMod Config")
 	public static final EpicSiegeModConfig EPICSIEGEMOD_CONFIG = new EpicSiegeModConfig();
+
+	@Config.Name("FirstAid Config")
+	public static final FirstAidConfig FIRSTAID_CONFIG = new FirstAidConfig();
 	
 	@Config.Name("InFRLCraft Config")
 	public static final InFRLCraftConfig INFRLCRAFT_CONFIG = new InFRLCraftConfig();

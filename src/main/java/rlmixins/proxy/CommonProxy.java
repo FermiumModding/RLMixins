@@ -5,7 +5,9 @@ import net.minecraft.item.Item;
 import net.minecraftforge.common.MinecraftForge;
 import rlmixins.handlers.ConfigHandler;
 import rlmixins.handlers.bettersurvival.PenetrationHandler;
+import rlmixins.handlers.firstaid.EndExitHandler;
 import rlmixins.handlers.potioncore.CureHandler;
+import rlmixins.handlers.potioncore.HealthFixHandler;
 import rlmixins.handlers.quark.PirateHatHandler;
 import rlmixins.handlers.rlartifacts.AntidoteHandler;
 import rlmixins.handlers.rlcombat.NetherBaneHandler;
@@ -28,8 +30,14 @@ public class CommonProxy {
                 ModLoadedUtil.isRLCombatLoaded()) {
             MinecraftForge.EVENT_BUS.register(PenetrationHandler.class);
         }
+        if(ConfigHandler.FIRSTAID_CONFIG.endExitHealthPatch && ModLoadedUtil.isFirstAidLoaded()) {
+            MinecraftForge.EVENT_BUS.register(EndExitHandler.class);
+        }
         if(ConfigHandler.POTIONCORE_CONFIG.cureAppliesOnAttack && ModLoadedUtil.isPotionCoreLoaded()) {
             MinecraftForge.EVENT_BUS.register(CureHandler.class);
+        }
+        if(ConfigHandler.POTIONCORE_CONFIG.persistentHealthFix && ModLoadedUtil.isPotionCoreLoaded()) {
+            MinecraftForge.EVENT_BUS.register(HealthFixHandler.class);
         }
         if(ConfigHandler.QUARK_CONFIG.pirateHatLooting && ModLoadedUtil.isQuarkLoaded()) {
             MinecraftForge.EVENT_BUS.register(PirateHatHandler.class);
