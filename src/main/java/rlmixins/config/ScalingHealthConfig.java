@@ -47,6 +47,19 @@ public class ScalingHealthConfig {
 	)
 	public boolean enableAdditionalBlightPotionEffects = false;
 
+	@Config.Comment("Makes the player keep their health when using the Exit End portal instead of restoring it to" +
+			"full\nNote: this also prevents restoring the Max Health, \"Keep Attributes on End Exit\" should be used" +
+			"in conjunction with this to keep the Max Health as well")
+	@Config.Name("Keep Health on End Exit (ScalingHealth)")
+	@Config.RequiresMcRestart
+	@MixinConfig.MixinToggle(lateMixin = "mixins.rlmixins.late.scalinghealth.endexithealth.json", defaultValue = false)
+	@MixinConfig.CompatHandling(
+			modid = ModLoadedUtil.ScalingHealth_MODID,
+			desired = true,
+			reason = "Requires mod to properly function"
+	)
+	public boolean keepHealthOnEndExit = false;
+
 	@Config.Comment("The potion effects to apply on blights (Format: modid:potionname, amplifier)" + "\n" +
 			"Requires \"Additional Blight Potion Effects (ScalingHealth)\" enabled")
 	@Config.Name("Additional Blight Potion Effects List")

@@ -19,6 +19,18 @@ public class VanillaConfig {
 	@MixinConfig.MixinToggle(earlyMixin = "mixins.rlmixins.early.vanilla.zombietrades.json", defaultValue = false)
 	public boolean zombieVillagersKeepTrades = false;
 
+	@Config.Comment("Fixes MC-6431: potion effects not carrying over when using the exit End Portal")
+	@Config.Name("Keep Potion Effects on End Exit")
+	@Config.RequiresMcRestart
+	@MixinConfig.MixinToggle(earlyMixin = "mixins.rlmixins.early.vanilla.endportaleffects.json", defaultValue = false)
+	public boolean keepEffectsOnEndExit = false;
+
+	@Config.Comment("Copies the player's attributes when using the Exit End Portal")
+	@Config.Name("Keep Attributes on End Exit")
+	@Config.RequiresMcRestart
+	@MixinConfig.MixinToggle(earlyMixin = "mixins.rlmixins.early.vanilla.endportalattributes.json", defaultValue = false)
+	public boolean keepAttributesOnEndExit = false;
+
 	@Config.Comment("Chance on curing zombie villagers to increase their prices and/or remove xp from some of their trades, per trade" + "\n" +
 			"Requires \"Cured Zombie Villagers Keep Trades (Vanilla)\" enabled")
 	@Config.Name("Curing Trauma Chance (Vanilla)")

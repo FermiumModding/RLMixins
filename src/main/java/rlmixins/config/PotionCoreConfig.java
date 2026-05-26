@@ -39,4 +39,9 @@ public class PotionCoreConfig {
 	@Config.Name("Cure Applies On Attack")
 	@Config.RequiresMcRestart
 	public boolean cureAppliesOnAttack = false;
+
+	@Config.Comment("Makes health persist when using the Exit End Portal\nThere is a similar issue with ScalingHealth)")
+	@Config.Name("Persistent Health Fix")
+	@Config.RequiresMcRestart
+	public boolean persistentHealthFix = false;
 }

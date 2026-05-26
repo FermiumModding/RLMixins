@@ -15,6 +15,7 @@ public abstract class ModLoadedUtil {
 	public static final String DefiledLands_MODID = "defiledlands";
 	public static final String DistinctDamageDescriptions_MODID = "distinctdamagedescriptions";
 	public static final String EpicSiegeMod_MODID = "epicsiegemod";
+	public static final String FirstAid_MOID = "firstaid";
 	public static final String InfernalMobs_MODID = "infernalmobs";
 	public static final String InFRLCraft_MODID = "iceandfire";
 	public static final String Inspirations_MODID = "inspirations";
@@ -37,6 +38,7 @@ public abstract class ModLoadedUtil {
 	private static Boolean charmLoaded = null;
 	private static Boolean chunkAnimatorLoaded = null;
 	private static Boolean dddLoaded = null;
+	private static Boolean firstAidLoaded = null;
 	private static Boolean potionCoreLoaded = null;
 	private static Boolean quarkLoaded = null;
 	private static Boolean rlArtifactsLoaded = null;
@@ -69,6 +71,11 @@ public abstract class ModLoadedUtil {
 	public static boolean isDDDLoaded() {
 		if(dddLoaded == null) dddLoaded = Loader.isModLoaded(DistinctDamageDescriptions_MODID);
 		return dddLoaded;
+	}
+
+	public static boolean isFirstAidLoaded() {
+		if(firstAidLoaded == null) firstAidLoaded = Loader.isModLoaded(FirstAid_MOID);
+		return firstAidLoaded;
 	}
 	
 	public static boolean isPotionCoreLoaded() {
