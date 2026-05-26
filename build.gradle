@@ -76,6 +76,7 @@ dependencies {
     compileOnly fg.deobf("curse.maven:defiledlands-${defiledlands_version}")
     compileOnly fg.deobf("curse.maven:distinctdamagedescriptions-${distinctdamagedescriptions_version}")
     compileOnly fg.deobf("curse.maven:epicsiegemod-${epicsiegemod_version}")
+    compileOnly fg.deobf("curse.maven:firstaid-${firstaid_version}")
     compileOnly fg.deobf("curse.maven:infernalmobs-${infernalmobs_version}")
     compileOnly fg.deobf("curse.maven:infrlcraft-${infrlcraft_version}")
     compileOnly fg.deobf("curse.maven:inspirations-${inspirations_version}")
