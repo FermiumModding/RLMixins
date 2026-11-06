@@ -15,8 +15,9 @@ public class BetterFoliageConfig {
 	@MixinConfig.MixinToggle(lateMixin = "mixins.rlmixins.late.betterfoliage.chunkanimator.json", defaultValue = false)
 	@MixinConfig.CompatHandling(
 			modid = ModLoadedUtil.BetterFoliage_MODID,
+			targetVersionRange = "(,2.5.0)",
 			desired = true,
-			reason = "Requires mod to properly function"
+			reason = "Requires BetterFoliage or RLFoliage before 2.5.0 (RLFoliage 2.5.0+ is a Java rewrite without the targeted classes)"
 	)
 	@MixinConfig.CompatHandling(
 			modid = ModLoadedUtil.ChunkAnimator_MODID,
