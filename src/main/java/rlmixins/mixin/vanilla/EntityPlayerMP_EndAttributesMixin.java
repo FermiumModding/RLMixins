@@ -3,6 +3,8 @@ package rlmixins.mixin.vanilla;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.mojang.authlib.GameProfile;
+import net.minecraft.entity.ai.attributes.AbstractAttributeMap;
+import net.minecraft.entity.ai.attributes.AttributeMap;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.world.World;
@@ -26,6 +28,12 @@ public abstract class EntityPlayerMP_EndAttributesMixin extends EntityPlayer {
 	@WrapOperation(method = "copyFrom", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/EntityPlayerMP;setHealth(F)V"))
 	private void rlmixins_firstAidEntityPlayerMP_copyFrom(EntityPlayerMP instance, float hp, Operation<Void> original, EntityPlayerMP that, boolean keepEverything) {
 		((EntityAttributeMapAccessor) this).rlmixins$setAttributeMap(that.getAttributeMap());
+		// The client gets a fresh player with default attributes and vanilla only syncs dirty ones,
+		// so mark all watched attributes dirty to resend them (otherwise e.g. jump/swim speed modifiers desync)
+		AbstractAttributeMap map = that.getAttributeMap();
+		if(map instanceof AttributeMap) {
+			((AttributeMap) map).getDirtyInstances().addAll(((AttributeMap) map).getWatchedAttributes());
+		}
 		original.call(instance, hp);
 	}
 }
