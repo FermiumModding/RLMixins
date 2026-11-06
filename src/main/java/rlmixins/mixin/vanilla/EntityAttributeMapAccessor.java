@@ -1,4 +1,4 @@
-package rlmixins.mixin.firstaid.vanilla;
+package rlmixins.mixin.vanilla;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.attributes.AbstractAttributeMap;

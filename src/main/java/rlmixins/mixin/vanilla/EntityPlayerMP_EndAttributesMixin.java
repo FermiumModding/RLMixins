@@ -10,7 +10,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import rlmixins.mixin.firstaid.vanilla.EntityAttributeMapAccessor;
 import rlmixins.mixin.firstaid.vanilla.EntityPlayerMP_EndExitMixin;
 
 /**

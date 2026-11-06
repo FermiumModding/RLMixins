@@ -6,7 +6,6 @@
   "target": "@env(DEFAULT)",
   "minVersion": "0.8",
   "mixins": [
-    "firstaid.vanilla.EntityAttributeMapAccessor",
     "firstaid.vanilla.EntityPlayerMP_EndExitMixin"
   ]
 }
