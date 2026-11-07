@@ -12,7 +12,7 @@ import rlmixins.loot.EnchantSpecific;
 import rlmixins.loot.PotionSpecific;
 import rlmixins.proxy.CommonProxy;
 
-@Mod(modid = RLMixins.MODID, version = RLMixins.VERSION, name = RLMixins.NAME, dependencies = "required:fermiumbooter")
+@Mod(modid = RLMixins.MODID, version = RLMixins.VERSION, name = RLMixins.NAME, dependencies = "required:fermiumbooter@[1.5.3,)")
 public class RLMixins {
     
     public static final String MODID = "rlmixins";
