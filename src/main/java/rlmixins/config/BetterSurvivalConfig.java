@@ -44,6 +44,17 @@ public class BetterSurvivalConfig {
 	)
 	public boolean educationBalance = false;
 	
+	@Config.Comment("Makes the Education enchantment also work when the weapon is held in the off hand, like SME's Adept")
+	@Config.Name("Education Offhand (BetterSurvival)")
+	@Config.RequiresMcRestart
+	@MixinConfig.MixinToggle(lateMixin = "mixins.rlmixins.late.bettersurvival.educationoffhand.json", defaultValue = false)
+	@MixinConfig.CompatHandling(
+			modid = ModLoadedUtil.BetterSurvival_MODID,
+			desired = true,
+			reason = "Requires mod to properly function"
+	)
+	public boolean educationOffhand = false;
+	
 	@Config.Comment("Allows for modifying the combo multiplier of Nunchaku")
 	@Config.Name("Modifiable Nunchaku Combo (BetterSurvival)")
 	@Config.RequiresMcRestart
